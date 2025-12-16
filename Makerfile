@@ -1,0 +1,102 @@
+.PHONY: help setup up down restart logs shell test test-coverage populate pint migrate fresh
+
+help: ## Show this help message
+	@echo 'Usage: make [target]'
+	@echo ''
+	@echo 'Available targets:'
+	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  %-20s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+
+setup: ## Initial setup (run once)
+	./setup.sh
+
+up: ## Start all containers
+	docker-compose up -d
+
+down: ## Stop all containers
+	docker-compose down
+
+restart: ## Restart all containers
+	docker-compose restart
+
+logs: ## Show application logs
+	docker-compose logs -f app
+
+logs-all: ## Show all container logs
+	docker-compose logs -f
+
+shell: ## Access application container shell
+	docker-compose exec app bash
+
+test: ## Run all tests
+	docker-compose exec app php artisan test
+
+test-coverage: ## Run tests with coverage report
+	docker-compose exec app php artisan test --coverage
+
+test-unit: ## Run unit tests only
+	docker-compose exec app php artisan test --testsuite=Unit
+
+test-feature: ## Run feature tests only
+	docker-compose exec app php artisan test --testsuite=Feature
+
+test-performance: ## Run performance tests
+	docker-compose exec app php artisan test --filter=PerformanceTest
+
+populate: ## Populate database with 100k translations
+	docker-compose exec app php artisan translations:populate 100000
+
+populate-10k: ## Populate database with 10k translations
+	docker-compose exec app php artisan translations:populate 10000
+
+pint: ## Fix code style with Laravel Pint
+	docker-compose exec app ./vendor/bin/pint
+
+pint-test: ## Check code style without fixing
+	docker-compose exec app ./vendor/bin/pint --test
+
+migrate: ## Run database migrations
+	docker-compose exec app php artisan migrate
+
+migrate-fresh: ## Drop all tables and re-run migrations
+	docker-compose exec app php artisan migrate:fresh
+
+fresh: ## Fresh database with test data
+	docker-compose exec app php artisan migrate:fresh
+	docker-compose exec app php artisan translations:populate 10000
+
+cache-clear: ## Clear all caches
+	docker-compose exec app php artisan cache:clear
+	docker-compose exec app php artisan config:clear
+	docker-compose exec app php artisan route:clear
+
+cache-optimize: ## Optimize for production
+	docker-compose exec app php artisan config:cache
+	docker-compose exec app php artisan route:cache
+	docker-compose exec app php artisan view:cache
+
+install: ## Install composer dependencies
+	docker-compose exec app composer install
+
+composer-update: ## Update composer dependencies
+	docker-compose exec app composer update
+
+key-generate: ## Generate application key
+	docker-compose exec app php artisan key:generate
+
+db-shell: ## Access MySQL shell
+	docker-compose exec db mysql -u translation -psecret translation_service
+
+redis-cli: ## Access Redis CLI
+	docker-compose exec redis redis-cli
+
+tinker: ## Open Laravel Tinker
+	docker-compose exec app php artisan tinker
+
+status: ## Show container status
+	docker-compose ps
+
+build: ## Build Docker images
+	docker-compose build
+
+build-no-cache: ## Build Docker images without cache
+	docker-compose build --no-cache
