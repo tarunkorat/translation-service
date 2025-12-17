@@ -2,7 +2,7 @@
 
 ## 📋 Overview
 
-A production-ready Laravel 11 Translation Management Service built following SOLID principles, PSR-12 standards, with comprehensive test coverage (95%+) and optimized for high performance (<200ms response times).
+A production-ready Laravel 12 Translation Management Service built following SOLID principles, PSR-12 standards, with comprehensive test coverage (95%+) and optimized for high performance (<200ms response times).
 
 ## ✅ Requirements Compliance
 
@@ -291,7 +291,7 @@ translation-service/
 
 | Component | Technology | Purpose |
 |-----------|-----------|---------|
-| Framework | Laravel 11 | Application foundation |
+| Framework | Laravel 12 | Application foundation |
 | Language | PHP 8.2 | Programming language |
 | Database | MySQL 8.0 | Primary data store |
 | Cache | Redis | Performance optimization |
