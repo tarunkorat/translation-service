@@ -23,7 +23,7 @@ A high-performance Laravel API service for managing translations across multiple
 
 ## Technical Stack
 
-- **Framework**: Laravel 11
+- **Framework**: Laravel 12
 - **PHP**: 8.2+
 - **Database**: MySQL 8.0 with optimized indexes
 - **Cache**: Redis
@@ -611,4 +611,4 @@ For issues, questions, or contributions, please open an issue on GitHub.
 
 ---
 
-**Built with ❤️ using Laravel 11**
+**Built with ❤️ using Laravel 12**
